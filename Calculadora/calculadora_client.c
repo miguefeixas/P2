@@ -111,8 +111,11 @@ int main(int argc, char *argv[])
 			else
 				printf("El divisor no puede ser cero\n");
 			break;
+		case 5:
+			break;
 
 		default:
+			printf("Opción no válida, las opciones disponibles son 1, 2, 3, 4 y 5\n");
 			break;
 		}
 	} while (option != 5);
