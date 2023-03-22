@@ -9,68 +9,149 @@
 /* Default timeout can be changed using clnt_control() */
 static struct timeval TIMEOUT = { 25, 0 };
 
-double *
-add_1(double arg1, double arg2,  CLIENT *clnt)
+float *
+add_1(float arg1, float arg2,  CLIENT *clnt)
 {
 	add_1_argument arg;
-	static double clnt_res;
+	static float clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, ADD, (xdrproc_t) xdr_add_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_double, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_float, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-double *
-sub_1(double arg1, double arg2,  CLIENT *clnt)
+float *
+sub_1(float arg1, float arg2,  CLIENT *clnt)
 {
 	sub_1_argument arg;
-	static double clnt_res;
+	static float clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, SUB, (xdrproc_t) xdr_sub_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_double, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_float, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-double *
-mul_1(double arg1, double arg2,  CLIENT *clnt)
+float *
+mul_1(float arg1, float arg2,  CLIENT *clnt)
 {
 	mul_1_argument arg;
-	static double clnt_res;
+	static float clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, MUL, (xdrproc_t) xdr_mul_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_double, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_float, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-double *
-div_1(double arg1, double arg2,  CLIENT *clnt)
+float *
+div_1(float arg1, float arg2,  CLIENT *clnt)
 {
 	div_1_argument arg;
-	static double clnt_res;
+	static float clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, DIV, (xdrproc_t) xdr_div_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_double, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_float, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+vect *
+addv_1(vect arg1, vect arg2,  CLIENT *clnt)
+{
+	addv_1_argument arg;
+	static vect clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	arg.arg1 = arg1;
+	arg.arg2 = arg2;
+	if (clnt_call (clnt, ADDV, (xdrproc_t) xdr_addv_1_argument, (caddr_t) &arg,
+		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+vect *
+subv_1(vect arg1, vect arg2,  CLIENT *clnt)
+{
+	subv_1_argument arg;
+	static vect clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	arg.arg1 = arg1;
+	arg.arg2 = arg2;
+	if (clnt_call (clnt, SUBV, (xdrproc_t) xdr_subv_1_argument, (caddr_t) &arg,
+		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+vect *
+mulv_1(vect arg1, int arg2,  CLIENT *clnt)
+{
+	mulv_1_argument arg;
+	static vect clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	arg.arg1 = arg1;
+	arg.arg2 = arg2;
+	if (clnt_call (clnt, MULV, (xdrproc_t) xdr_mulv_1_argument, (caddr_t) &arg,
+		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+matrix *
+transpose_1(matrix arg1,  CLIENT *clnt)
+{
+	static matrix clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, TRANSPOSE,
+		(xdrproc_t) xdr_matrix, (caddr_t) &arg1,
+		(xdrproc_t) xdr_matrix, (caddr_t) &clnt_res,
+		TIMEOUT) != RPC_SUCCESS) {
+		return (NULL);
+	}
+	return (&clnt_res);
+}
+
+bool_t *
+ispalindrome_1(word arg1,  CLIENT *clnt)
+{
+	static bool_t clnt_res;
+
+	memset((char *)&clnt_res, 0, sizeof(clnt_res));
+	if (clnt_call (clnt, ISPALINDROME,
+		(xdrproc_t) xdr_word, (caddr_t) &arg1,
+		(xdrproc_t) xdr_bool, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}

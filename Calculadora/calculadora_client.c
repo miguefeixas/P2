@@ -6,77 +6,162 @@
 
 #include "calculadora.h"
 
-void calculatorprog_1(char *host, int option, double a, double b)
+
+void
+calculatorprog_1(char *host, int option, float a, float b, vect v1, vect v2, matrix m1, word w1)
 {
 	CLIENT *clnt;
-	double *result_1;
-	double num1 = a;
-	double num2 = b;
+	float  *result_float;
+	float num1 = a;
+	float num2 = b;
+	vect  *result_vect;
+	vect vect1 = v1;
+	vect vect2 = v2;
+	matrix  *result_matrix;
+	matrix matrix1 = m1;
+	bool_t  *result_bool;
+	word word1 = w1;
 
-#ifndef DEBUG
-	clnt = clnt_create(host, CALCULATORPROG, CALCULATORVERS, "udp");
-	if (clnt == NULL)
-	{
-		clnt_pcreateerror(host);
-		exit(1);
+#ifndef	DEBUG
+	clnt = clnt_create (host, CALCULATORPROG, CALCULATORVERS, "udp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
 	}
-#endif /* DEBUG */
+#endif	/* DEBUG */
 
-	switch (option)
+		switch (option)
 	{
 	case 1:
-		result_1 = add_1(num1, num2, clnt);
-		if (result_1 == (double *)NULL)
+		result_float = add_1(num1, num2, clnt);
+		if (result_float == (float *)NULL)
 		{
 			clnt_perror(clnt, "call failed");
 		}
 		break;
 	case 2:
-		result_1 = sub_1(num1, num2, clnt);
-		if (result_1 == (double *)NULL)
+		result_float = sub_1(num1, num2, clnt);
+		if (result_float == (float *)NULL)
 		{
 			clnt_perror(clnt, "call failed");
 		}
 		break;
 	case 3:
-		result_1 = mul_1(num1, num2, clnt);
-		if (result_1 == (double *)NULL)
+		result_float = mul_1(num1, num2, clnt);
+		if (result_float == (float *)NULL)
 		{
 			clnt_perror(clnt, "call failed");
 		}
 		break;
 	case 4:
-		result_1 = div_1(num1, num2, clnt);
-		if (result_1 == (double *)NULL)
+		result_float = div_1(num1, num2, clnt);
+		if (result_float == (float *)NULL)
 		{
 			clnt_perror(clnt, "call failed");
 		}
 		break;
-
+	case 5:
+		result_vect = addv_1(vect1, vect2, clnt);
+		if (result_vect == (vect *)NULL)
+		{
+			clnt_perror(clnt, "call failed");
+		}
+		break;
+	case 6:
+		result_vect = subv_1(vect1, vect2, clnt);
+		if (result_vect == (vect *)NULL)
+		{
+			clnt_perror(clnt, "call failed");
+		}
+		break;
+	case 7:
+		result_vect = mulv_1(vect1, num1, clnt);
+		if (result_vect == (vect *)NULL)
+		{
+			clnt_perror(clnt, "call failed");
+		}
+		break;
+	case 8:
+		result_matrix = transpose_1(matrix1, clnt);
+		if (result_matrix == (matrix *)NULL)
+		{
+			clnt_perror(clnt, "call failed");
+		}
+		break;
+	case 9:
+		result_bool = ispalindrome_1(word1, clnt);
+		if (result_bool == (bool_t *)NULL)
+		{
+			clnt_perror(clnt, "call failed");
+		}
+		break;
 	default:
 		break;
 	}
 
-	printf("El resultado es %0.2f\n", *result_1);
+	printf("El resultado es %0.2f\n", *result_float);
 
-#ifndef DEBUG
-	clnt_destroy(clnt);
-#endif /* DEBUG */
+	/*
+	result_1 = add_1(add_1_arg1, add_1_arg2, clnt);
+	if (result_1 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_2 = sub_1(sub_1_arg1, sub_1_arg2, clnt);
+	if (result_2 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_3 = mul_1(mul_1_arg1, mul_1_arg2, clnt);
+	if (result_3 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_4 = div_1(div_1_arg1, div_1_arg2, clnt);
+	if (result_4 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_5 = addv_1(addv_1_arg1, addv_1_arg2, clnt);
+	if (result_5 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_6 = subv_1(subv_1_arg1, subv_1_arg2, clnt);
+	if (result_6 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_7 = mulv_1(mulv_1_arg1, mulv_1_arg2, clnt);
+	if (result_7 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_8 = transpose_1(transpose_1_arg1, clnt);
+	if (result_8 == (matrix *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_9 = ispalindrome_1(ispalindrome_1_arg1, clnt);
+	if (result_9 == (bool_t *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	*/
+
+#ifndef	DEBUG
+	clnt_destroy (clnt);
+#endif	 /* DEBUG */
 }
 
-int main(int argc, char *argv[])
+
+int
+main (int argc, char *argv[])
 {
 	char *host;
 	int option;
-	double num1, num2;
+	float num1, num2;
+	vect vect1, vect2;
+	matrix matrix1;
+	word word1;
 
-	if (argc < 2)
-	{
-		printf("usage: %s server_host\n", argv[0]);
-		exit(1);
+	if (argc < 2) {
+		printf ("usage: %s server_host\n", argv[0]);
+		exit (1);
 	}
 	host = argv[1];
-
+	
 	printf("**** Calculadora ****\n");
 
 	do
@@ -89,36 +174,59 @@ int main(int argc, char *argv[])
 		{
 		case 1:
 			printf("Introduzca los dos sumandos: ");
-			scanf("%lf %lf", &num1, &num2);
-			calculatorprog_1(host, 1, num1, num2);
+			scanf("%f %f", &num1, &num2);
+			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
 			break;
 		case 2:
 			printf("Introduzca el minuendo y el sustraendo: ");
-			scanf("%lf %lf", &num1, &num2);
-			calculatorprog_1(host, 2, num1, num2);
+			scanf("%f %f", &num1, &num2);
+			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
 			break;
 		case 3:
 			printf("Introduzca los dos factores: ");
-			scanf("%lf %lf", &num1, &num2);
-			calculatorprog_1(host, 3, num1, num2);
+			scanf("%f %f", &num1, &num2);
+			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
 			break;
 		case 4:
 			printf("Introduzca el dividendo y el divisor: ");
-			scanf("%lf %lf", &num1, &num2);
+			scanf("%f %f", &num1, &num2);
 
 			if (num2 != 0)
-				calculatorprog_1(host, 4, num1, num2);
+				calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
 			else
 				printf("El divisor no puede ser cero\n");
 			break;
 		case 5:
+			int i = 0;
+			//v.miArray_val = malloc(v.miArray_len * sizeof(float));
+			vect1.vect_val = malloc(10 * sizeof(float));
+			printf("Introduzca los elementos del primer vector, terminando con -1");
+			scanf("%f", &num1);
+			while(num1 != -1) {
+				vect1.vect_val[i] = num1;
+				i++;
+				scanf("%f", &num1);
+			}
+			i = 0;
+			float a;
+
+			while(i < 10) {
+				a = vect1.vect_val[i];
+				printf("%f ", a);
+				i++;
+			}
+
+			/*if (num2 != 0)
+				calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
+			else
+				printf("El divisor no puede ser cero\n");*/
 			break;
 
 		default:
 			printf("Opción no válida, las opciones disponibles son 1, 2, 3, 4 y 5\n");
 			break;
 		}
-	} while (option != 5);
+	} while (option != 6);
 
-	exit(0);
+exit (0);
 }

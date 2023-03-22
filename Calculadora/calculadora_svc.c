@@ -16,28 +16,58 @@
 #define SIG_PF void(*)(int)
 #endif
 
-static double *
+static float *
 _add_1 (add_1_argument *argp, struct svc_req *rqstp)
 {
 	return (add_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static double *
+static float *
 _sub_1 (sub_1_argument *argp, struct svc_req *rqstp)
 {
 	return (sub_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static double *
+static float *
 _mul_1 (mul_1_argument *argp, struct svc_req *rqstp)
 {
 	return (mul_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static double *
+static float *
 _div_1 (div_1_argument *argp, struct svc_req *rqstp)
 {
 	return (div_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static vect *
+_addv_1 (addv_1_argument *argp, struct svc_req *rqstp)
+{
+	return (addv_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static vect *
+_subv_1 (subv_1_argument *argp, struct svc_req *rqstp)
+{
+	return (subv_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static vect *
+_mulv_1 (mulv_1_argument *argp, struct svc_req *rqstp)
+{
+	return (mulv_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static matrix *
+_transpose_1 (matrix  *argp, struct svc_req *rqstp)
+{
+	return (transpose_1_svc(*argp, rqstp));
+}
+
+static bool_t *
+_ispalindrome_1 (word  *argp, struct svc_req *rqstp)
+{
+	return (ispalindrome_1_svc(*argp, rqstp));
 }
 
 static void
@@ -48,6 +78,11 @@ calculatorprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		sub_1_argument sub_1_arg;
 		mul_1_argument mul_1_arg;
 		div_1_argument div_1_arg;
+		addv_1_argument addv_1_arg;
+		subv_1_argument subv_1_arg;
+		mulv_1_argument mulv_1_arg;
+		matrix transpose_1_arg;
+		word ispalindrome_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -60,26 +95,56 @@ calculatorprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 
 	case ADD:
 		_xdr_argument = (xdrproc_t) xdr_add_1_argument;
-		_xdr_result = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_float;
 		local = (char *(*)(char *, struct svc_req *)) _add_1;
 		break;
 
 	case SUB:
 		_xdr_argument = (xdrproc_t) xdr_sub_1_argument;
-		_xdr_result = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_float;
 		local = (char *(*)(char *, struct svc_req *)) _sub_1;
 		break;
 
 	case MUL:
 		_xdr_argument = (xdrproc_t) xdr_mul_1_argument;
-		_xdr_result = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_float;
 		local = (char *(*)(char *, struct svc_req *)) _mul_1;
 		break;
 
 	case DIV:
 		_xdr_argument = (xdrproc_t) xdr_div_1_argument;
-		_xdr_result = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_float;
 		local = (char *(*)(char *, struct svc_req *)) _div_1;
+		break;
+
+	case ADDV:
+		_xdr_argument = (xdrproc_t) xdr_addv_1_argument;
+		_xdr_result = (xdrproc_t) xdr_vect;
+		local = (char *(*)(char *, struct svc_req *)) _addv_1;
+		break;
+
+	case SUBV:
+		_xdr_argument = (xdrproc_t) xdr_subv_1_argument;
+		_xdr_result = (xdrproc_t) xdr_vect;
+		local = (char *(*)(char *, struct svc_req *)) _subv_1;
+		break;
+
+	case MULV:
+		_xdr_argument = (xdrproc_t) xdr_mulv_1_argument;
+		_xdr_result = (xdrproc_t) xdr_vect;
+		local = (char *(*)(char *, struct svc_req *)) _mulv_1;
+		break;
+
+	case TRANSPOSE:
+		_xdr_argument = (xdrproc_t) xdr_matrix;
+		_xdr_result = (xdrproc_t) xdr_matrix;
+		local = (char *(*)(char *, struct svc_req *)) _transpose_1;
+		break;
+
+	case ISPALINDROME:
+		_xdr_argument = (xdrproc_t) xdr_word;
+		_xdr_result = (xdrproc_t) xdr_bool;
+		local = (char *(*)(char *, struct svc_req *)) _ispalindrome_1;
 		break;
 
 	default:

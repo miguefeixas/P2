@@ -13,78 +13,151 @@
 extern "C" {
 #endif
 
+#define MAX 10
+
+typedef struct {
+	u_int vect_len;
+	float *vect_val;
+} vect;
+
+typedef struct {
+	u_int matrix_len;
+	vect *matrix_val;
+} matrix;
+
+typedef char *word;
 
 struct add_1_argument {
-	double arg1;
-	double arg2;
+	float arg1;
+	float arg2;
 };
 typedef struct add_1_argument add_1_argument;
 
 struct sub_1_argument {
-	double arg1;
-	double arg2;
+	float arg1;
+	float arg2;
 };
 typedef struct sub_1_argument sub_1_argument;
 
 struct mul_1_argument {
-	double arg1;
-	double arg2;
+	float arg1;
+	float arg2;
 };
 typedef struct mul_1_argument mul_1_argument;
 
 struct div_1_argument {
-	double arg1;
-	double arg2;
+	float arg1;
+	float arg2;
 };
 typedef struct div_1_argument div_1_argument;
+
+struct addv_1_argument {
+	vect arg1;
+	vect arg2;
+};
+typedef struct addv_1_argument addv_1_argument;
+
+struct subv_1_argument {
+	vect arg1;
+	vect arg2;
+};
+typedef struct subv_1_argument subv_1_argument;
+
+struct mulv_1_argument {
+	vect arg1;
+	int arg2;
+};
+typedef struct mulv_1_argument mulv_1_argument;
 
 #define CALCULATORPROG 0x20000001
 #define CALCULATORVERS 1
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define ADD 1
-extern  double * add_1(double , double , CLIENT *);
-extern  double * add_1_svc(double , double , struct svc_req *);
+extern  float * add_1(float , float , CLIENT *);
+extern  float * add_1_svc(float , float , struct svc_req *);
 #define SUB 2
-extern  double * sub_1(double , double , CLIENT *);
-extern  double * sub_1_svc(double , double , struct svc_req *);
+extern  float * sub_1(float , float , CLIENT *);
+extern  float * sub_1_svc(float , float , struct svc_req *);
 #define MUL 3
-extern  double * mul_1(double , double , CLIENT *);
-extern  double * mul_1_svc(double , double , struct svc_req *);
+extern  float * mul_1(float , float , CLIENT *);
+extern  float * mul_1_svc(float , float , struct svc_req *);
 #define DIV 4
-extern  double * div_1(double , double , CLIENT *);
-extern  double * div_1_svc(double , double , struct svc_req *);
+extern  float * div_1(float , float , CLIENT *);
+extern  float * div_1_svc(float , float , struct svc_req *);
+#define ADDV 5
+extern  vect * addv_1(vect , vect , CLIENT *);
+extern  vect * addv_1_svc(vect , vect , struct svc_req *);
+#define SUBV 6
+extern  vect * subv_1(vect , vect , CLIENT *);
+extern  vect * subv_1_svc(vect , vect , struct svc_req *);
+#define MULV 7
+extern  vect * mulv_1(vect , int , CLIENT *);
+extern  vect * mulv_1_svc(vect , int , struct svc_req *);
+#define TRANSPOSE 8
+extern  matrix * transpose_1(matrix , CLIENT *);
+extern  matrix * transpose_1_svc(matrix , struct svc_req *);
+#define ISPALINDROME 9
+extern  bool_t * ispalindrome_1(word , CLIENT *);
+extern  bool_t * ispalindrome_1_svc(word , struct svc_req *);
 extern int calculatorprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define ADD 1
-extern  double * add_1();
-extern  double * add_1_svc();
+extern  float * add_1();
+extern  float * add_1_svc();
 #define SUB 2
-extern  double * sub_1();
-extern  double * sub_1_svc();
+extern  float * sub_1();
+extern  float * sub_1_svc();
 #define MUL 3
-extern  double * mul_1();
-extern  double * mul_1_svc();
+extern  float * mul_1();
+extern  float * mul_1_svc();
 #define DIV 4
-extern  double * div_1();
-extern  double * div_1_svc();
+extern  float * div_1();
+extern  float * div_1_svc();
+#define ADDV 5
+extern  vect * addv_1();
+extern  vect * addv_1_svc();
+#define SUBV 6
+extern  vect * subv_1();
+extern  vect * subv_1_svc();
+#define MULV 7
+extern  vect * mulv_1();
+extern  vect * mulv_1_svc();
+#define TRANSPOSE 8
+extern  matrix * transpose_1();
+extern  matrix * transpose_1_svc();
+#define ISPALINDROME 9
+extern  bool_t * ispalindrome_1();
+extern  bool_t * ispalindrome_1_svc();
 extern int calculatorprog_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
+extern  bool_t xdr_vect (XDR *, vect*);
+extern  bool_t xdr_matrix (XDR *, matrix*);
+extern  bool_t xdr_word (XDR *, word*);
 extern  bool_t xdr_add_1_argument (XDR *, add_1_argument*);
 extern  bool_t xdr_sub_1_argument (XDR *, sub_1_argument*);
 extern  bool_t xdr_mul_1_argument (XDR *, mul_1_argument*);
 extern  bool_t xdr_div_1_argument (XDR *, div_1_argument*);
+extern  bool_t xdr_addv_1_argument (XDR *, addv_1_argument*);
+extern  bool_t xdr_subv_1_argument (XDR *, subv_1_argument*);
+extern  bool_t xdr_mulv_1_argument (XDR *, mulv_1_argument*);
 
 #else /* K&R C */
+extern bool_t xdr_vect ();
+extern bool_t xdr_matrix ();
+extern bool_t xdr_word ();
 extern bool_t xdr_add_1_argument ();
 extern bool_t xdr_sub_1_argument ();
 extern bool_t xdr_mul_1_argument ();
 extern bool_t xdr_div_1_argument ();
+extern bool_t xdr_addv_1_argument ();
+extern bool_t xdr_subv_1_argument ();
+extern bool_t xdr_mulv_1_argument ();
 
 #endif /* K&R C */
 

@@ -6,11 +6,43 @@
 #include "calculadora.h"
 
 bool_t
+xdr_vect (XDR *xdrs, vect *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_array (xdrs, (char **)&objp->vect_val, (u_int *) &objp->vect_len, MAX,
+		sizeof (float), (xdrproc_t) xdr_float))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_matrix (XDR *xdrs, matrix *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_array (xdrs, (char **)&objp->matrix_val, (u_int *) &objp->matrix_len, MAX,
+		sizeof (vect), (xdrproc_t) xdr_vect))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_word (XDR *xdrs, word *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_string (xdrs, objp, ~0))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
 xdr_add_1_argument (XDR *xdrs, add_1_argument *objp)
 {
-	 if (!xdr_double (xdrs, &objp->arg1))
+	 if (!xdr_float (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_double (xdrs, &objp->arg2))
+	 if (!xdr_float (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }
@@ -18,9 +50,9 @@ xdr_add_1_argument (XDR *xdrs, add_1_argument *objp)
 bool_t
 xdr_sub_1_argument (XDR *xdrs, sub_1_argument *objp)
 {
-	 if (!xdr_double (xdrs, &objp->arg1))
+	 if (!xdr_float (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_double (xdrs, &objp->arg2))
+	 if (!xdr_float (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }
@@ -28,9 +60,9 @@ xdr_sub_1_argument (XDR *xdrs, sub_1_argument *objp)
 bool_t
 xdr_mul_1_argument (XDR *xdrs, mul_1_argument *objp)
 {
-	 if (!xdr_double (xdrs, &objp->arg1))
+	 if (!xdr_float (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_double (xdrs, &objp->arg2))
+	 if (!xdr_float (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }
@@ -38,9 +70,39 @@ xdr_mul_1_argument (XDR *xdrs, mul_1_argument *objp)
 bool_t
 xdr_div_1_argument (XDR *xdrs, div_1_argument *objp)
 {
-	 if (!xdr_double (xdrs, &objp->arg1))
+	 if (!xdr_float (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_double (xdrs, &objp->arg2))
+	 if (!xdr_float (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_addv_1_argument (XDR *xdrs, addv_1_argument *objp)
+{
+	 if (!xdr_vect (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_vect (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_subv_1_argument (XDR *xdrs, subv_1_argument *objp)
+{
+	 if (!xdr_vect (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_vect (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_mulv_1_argument (XDR *xdrs, mulv_1_argument *objp)
+{
+	 if (!xdr_vect (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_int (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }

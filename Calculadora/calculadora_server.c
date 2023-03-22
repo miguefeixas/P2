@@ -6,42 +6,102 @@
 
 #include "calculadora.h"
 
-double *
-add_1_svc(double arg1, double arg2,  struct svc_req *rqstp)
+float *
+add_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
 {
-	static double  result;
+	static float  result;
 
 	result = arg1 + arg2;
 
 	return &result;
 }
 
-double *
-sub_1_svc(double arg1, double arg2,  struct svc_req *rqstp)
+float *
+sub_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
 {
-	static double  result;
+	static float  result;
 
 	result = arg1 - arg2;
 
 	return &result;
 }
 
-double *
-mul_1_svc(double arg1, double arg2,  struct svc_req *rqstp)
+float *
+mul_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
 {
-	static double  result;
+	static float  result;
 
 	result = arg1 * arg2;
 
 	return &result;
 }
 
-double *
-div_1_svc(double arg1, double arg2,  struct svc_req *rqstp)
+float *
+div_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
 {
-	static double  result;
+	static float  result;
 
 	result = arg1 / arg2;
+
+	return &result;
+}
+
+vect *
+addv_1_svc(vect arg1, vect arg2,  struct svc_req *rqstp)
+{
+	static vect  result;
+
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
+}
+
+vect *
+subv_1_svc(vect arg1, vect arg2,  struct svc_req *rqstp)
+{
+	static vect  result;
+
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
+}
+
+vect *
+mulv_1_svc(vect arg1, int arg2,  struct svc_req *rqstp)
+{
+	static vect  result;
+
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
+}
+
+matrix *
+transpose_1_svc(matrix arg1,  struct svc_req *rqstp)
+{
+	static matrix  result;
+
+	/*
+	 * insert server code here
+	 */
+
+	return &result;
+}
+
+bool_t *
+ispalindrome_1_svc(word arg1,  struct svc_req *rqstp)
+{
+	static bool_t  result;
+
+	/*
+	 * insert server code here
+	 */
 
 	return &result;
 }
