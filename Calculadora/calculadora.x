@@ -10,10 +10,22 @@ program CALCULATORPROG {
 		float SUB(float, float) = 2;
 		float MUL(float, float) = 3;
 		float DIV(float, float) = 4;
-		vect ADDV(vect, vect) = 5;
-		vect SUBV(vect, vect) = 6;
-		vect MULV(vect, int) = 7;
-		matrix TRANSPOSE(matrix) = 8;
-		bool ISPALINDROME(word) = 9;
+		
 	} =1;
 } = 0x20000001;
+
+program CALCULATORVPROG {
+	version CALCULATORVVERS {
+		vect ADDV(vect, vect) = 1;
+		vect SUBV(vect, vect) = 2;
+		vect MULV(vect, int) = 3;
+		matrix TRANSPOSE(matrix) = 4;
+	} =1;
+} = 0x20000002;
+
+program PALINDROMECHECKER {
+	version PALINDROMECHECKERVERS {
+		bool ISPALINDROME(word) = 1;
+	} =1;
+} = 0x20000003;
+

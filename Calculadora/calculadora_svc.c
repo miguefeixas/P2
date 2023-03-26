@@ -78,11 +78,6 @@ calculatorprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		sub_1_argument sub_1_arg;
 		mul_1_argument mul_1_arg;
 		div_1_argument div_1_arg;
-		addv_1_argument addv_1_arg;
-		subv_1_argument subv_1_arg;
-		mulv_1_argument mulv_1_arg;
-		matrix transpose_1_arg;
-		word ispalindrome_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -117,6 +112,44 @@ calculatorprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		local = (char *(*)(char *, struct svc_req *)) _div_1;
 		break;
 
+	default:
+		svcerr_noproc (transp);
+		return;
+	}
+	memset ((char *)&argument, 0, sizeof (argument));
+	if (!svc_getargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+		svcerr_decode (transp);
+		return;
+	}
+	result = (*local)((char *)&argument, rqstp);
+	if (result != NULL && !svc_sendreply(transp, (xdrproc_t) _xdr_result, result)) {
+		svcerr_systemerr (transp);
+	}
+	if (!svc_freeargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+		fprintf (stderr, "%s", "unable to free arguments");
+		exit (1);
+	}
+	return;
+}
+
+static void
+calculatorvprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
+{
+	union {
+		addv_1_argument addv_1_arg;
+		subv_1_argument subv_1_arg;
+		mulv_1_argument mulv_1_arg;
+		matrix transpose_1_arg;
+	} argument;
+	char *result;
+	xdrproc_t _xdr_argument, _xdr_result;
+	char *(*local)(char *, struct svc_req *);
+
+	switch (rqstp->rq_proc) {
+	case NULLPROC:
+		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
+		return;
+
 	case ADDV:
 		_xdr_argument = (xdrproc_t) xdr_addv_1_argument;
 		_xdr_result = (xdrproc_t) xdr_vect;
@@ -140,6 +173,41 @@ calculatorprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		_xdr_result = (xdrproc_t) xdr_matrix;
 		local = (char *(*)(char *, struct svc_req *)) _transpose_1;
 		break;
+
+	default:
+		svcerr_noproc (transp);
+		return;
+	}
+	memset ((char *)&argument, 0, sizeof (argument));
+	if (!svc_getargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+		svcerr_decode (transp);
+		return;
+	}
+	result = (*local)((char *)&argument, rqstp);
+	if (result != NULL && !svc_sendreply(transp, (xdrproc_t) _xdr_result, result)) {
+		svcerr_systemerr (transp);
+	}
+	if (!svc_freeargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+		fprintf (stderr, "%s", "unable to free arguments");
+		exit (1);
+	}
+	return;
+}
+
+static void
+palindromechecker_1(struct svc_req *rqstp, register SVCXPRT *transp)
+{
+	union {
+		word ispalindrome_1_arg;
+	} argument;
+	char *result;
+	xdrproc_t _xdr_argument, _xdr_result;
+	char *(*local)(char *, struct svc_req *);
+
+	switch (rqstp->rq_proc) {
+	case NULLPROC:
+		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
+		return;
 
 	case ISPALINDROME:
 		_xdr_argument = (xdrproc_t) xdr_word;
@@ -173,6 +241,8 @@ main (int argc, char **argv)
 	register SVCXPRT *transp;
 
 	pmap_unset (CALCULATORPROG, CALCULATORVERS);
+	pmap_unset (CALCULATORVPROG, CALCULATORVVERS);
+	pmap_unset (PALINDROMECHECKER, PALINDROMECHECKERVERS);
 
 	transp = svcudp_create(RPC_ANYSOCK);
 	if (transp == NULL) {
@@ -183,6 +253,14 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "unable to register (CALCULATORPROG, CALCULATORVERS, udp).");
 		exit(1);
 	}
+	if (!svc_register(transp, CALCULATORVPROG, CALCULATORVVERS, calculatorvprog_1, IPPROTO_UDP)) {
+		fprintf (stderr, "%s", "unable to register (CALCULATORVPROG, CALCULATORVVERS, udp).");
+		exit(1);
+	}
+	if (!svc_register(transp, PALINDROMECHECKER, PALINDROMECHECKERVERS, palindromechecker_1, IPPROTO_UDP)) {
+		fprintf (stderr, "%s", "unable to register (PALINDROMECHECKER, PALINDROMECHECKERVERS, udp).");
+		exit(1);
+	}
 
 	transp = svctcp_create(RPC_ANYSOCK, 0, 0);
 	if (transp == NULL) {
@@ -191,6 +269,14 @@ main (int argc, char **argv)
 	}
 	if (!svc_register(transp, CALCULATORPROG, CALCULATORVERS, calculatorprog_1, IPPROTO_TCP)) {
 		fprintf (stderr, "%s", "unable to register (CALCULATORPROG, CALCULATORVERS, tcp).");
+		exit(1);
+	}
+	if (!svc_register(transp, CALCULATORVPROG, CALCULATORVVERS, calculatorvprog_1, IPPROTO_TCP)) {
+		fprintf (stderr, "%s", "unable to register (CALCULATORVPROG, CALCULATORVVERS, tcp).");
+		exit(1);
+	}
+	if (!svc_register(transp, PALINDROMECHECKER, PALINDROMECHECKERVERS, palindromechecker_1, IPPROTO_TCP)) {
+		fprintf (stderr, "%s", "unable to register (PALINDROMECHECKER, PALINDROMECHECKERVERS, tcp).");
 		exit(1);
 	}
 

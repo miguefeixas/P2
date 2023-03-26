@@ -8,19 +8,12 @@
 
 
 void
-calculatorprog_1(char *host, int option, float a, float b, vect v1, vect v2, matrix m1, word w1)
+calculatorprog_1(char *host, int option, float a, float b)
 {
 	CLIENT *clnt;
-	float  *result_float;
+	float  *result_calc;
 	float num1 = a;
 	float num2 = b;
-	vect  *result_vect;
-	vect vect1 = v1;
-	vect vect2 = v2;
-	matrix  *result_matrix;
-	matrix matrix1 = m1;
-	bool_t  *result_bool;
-	word word1 = w1;
 
 #ifndef	DEBUG
 	clnt = clnt_create (host, CALCULATORPROG, CALCULATORVERS, "udp");
@@ -30,116 +23,110 @@ calculatorprog_1(char *host, int option, float a, float b, vect v1, vect v2, mat
 	}
 #endif	/* DEBUG */
 
-		switch (option)
+	switch (option)
 	{
 	case 1:
-		result_float = add_1(num1, num2, clnt);
-		if (result_float == (float *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
+		result_calc = add_1(num1, num2, clnt);
+		if (result_calc == (float *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
 		break;
 	case 2:
-		result_float = sub_1(num1, num2, clnt);
-		if (result_float == (float *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
+		result_calc = sub_1(num1, num2, clnt);
+		if (result_calc == (float *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
 		break;
 	case 3:
-		result_float = mul_1(num1, num2, clnt);
-		if (result_float == (float *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
+		result_calc = mul_1(num1, num2, clnt);
+		if (result_calc == (float *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
 		break;
 	case 4:
-		result_float = div_1(num1, num2, clnt);
-		if (result_float == (float *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
+		result_calc = div_1(num1, num2, clnt);
+		if (result_calc == (float *) NULL) {
+			clnt_perror (clnt, "call failed");
 		}
 		break;
-	case 5:
-		result_vect = addv_1(vect1, vect2, clnt);
-		if (result_vect == (vect *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
-		}
-		break;
-	case 6:
-		result_vect = subv_1(vect1, vect2, clnt);
-		if (result_vect == (vect *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
-		}
-		break;
-	case 7:
-		result_vect = mulv_1(vect1, num1, clnt);
-		if (result_vect == (vect *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
-		}
-		break;
-	case 8:
-		result_matrix = transpose_1(matrix1, clnt);
-		if (result_matrix == (matrix *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
-		}
-		break;
-	case 9:
-		result_bool = ispalindrome_1(word1, clnt);
-		if (result_bool == (bool_t *)NULL)
-		{
-			clnt_perror(clnt, "call failed");
-		}
-		break;
+	
 	default:
 		break;
 	}
 
-	printf("El resultado es %0.2f\n", *result_float);
+	printf("El resultado es %0.2f\n", *result_calc);
 
-	/*
-	result_1 = add_1(add_1_arg1, add_1_arg2, clnt);
-	if (result_1 == (double *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_2 = sub_1(sub_1_arg1, sub_1_arg2, clnt);
-	if (result_2 == (double *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_3 = mul_1(mul_1_arg1, mul_1_arg2, clnt);
-	if (result_3 == (double *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_4 = div_1(div_1_arg1, div_1_arg2, clnt);
-	if (result_4 == (double *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_5 = addv_1(addv_1_arg1, addv_1_arg2, clnt);
-	if (result_5 == (vect *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_6 = subv_1(subv_1_arg1, subv_1_arg2, clnt);
-	if (result_6 == (vect *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_7 = mulv_1(mulv_1_arg1, mulv_1_arg2, clnt);
-	if (result_7 == (vect *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_8 = transpose_1(transpose_1_arg1, clnt);
-	if (result_8 == (matrix *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_9 = ispalindrome_1(ispalindrome_1_arg1, clnt);
-	if (result_9 == (bool_t *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	*/
+#ifndef	DEBUG
+	clnt_destroy (clnt);
+#endif	 /* DEBUG */
+}
 
+
+void
+calculatorvprog_1(char *host)
+{
+	CLIENT *clnt;
+	vect  *result_1;
+	vect addv_1_arg1;
+	vect addv_1_arg2;
+	vect  *result_2;
+	vect subv_1_arg1;
+	vect subv_1_arg2;
+	vect  *result_3;
+	vect mulv_1_arg1;
+	int mulv_1_arg2;
+	matrix  *result_4;
+	matrix transpose_1_arg1;
+
+#ifndef	DEBUG
+	clnt = clnt_create (host, CALCULATORVPROG, CALCULATORVVERS, "udp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+#endif	/* DEBUG */
+
+	result_1 = addv_1(addv_1_arg1, addv_1_arg2, clnt);
+	if (result_1 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_2 = subv_1(subv_1_arg1, subv_1_arg2, clnt);
+	if (result_2 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_3 = mulv_1(mulv_1_arg1, mulv_1_arg2, clnt);
+	if (result_3 == (vect *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_4 = transpose_1(transpose_1_arg1, clnt);
+	if (result_4 == (matrix *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+#ifndef	DEBUG
+	clnt_destroy (clnt);
+#endif	 /* DEBUG */
+}
+
+
+void
+palindromechecker_1(char *host)
+{
+	CLIENT *clnt;
+	bool_t  *result_1;
+	word ispalindrome_1_arg1;
+
+#ifndef	DEBUG
+	clnt = clnt_create (host, PALINDROMECHECKER, PALINDROMECHECKERVERS, "udp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+#endif	/* DEBUG */
+
+	result_1 = ispalindrome_1(ispalindrome_1_arg1, clnt);
+	if (result_1 == (bool_t *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
 #ifndef	DEBUG
 	clnt_destroy (clnt);
 #endif	 /* DEBUG */
@@ -152,17 +139,13 @@ main (int argc, char *argv[])
 	char *host;
 	int option;
 	float num1, num2;
-	vect vect1, vect2;
-	matrix matrix1;
-	word word1;
 
 	if (argc < 2) {
 		printf ("usage: %s server_host\n", argv[0]);
 		exit (1);
 	}
+
 	host = argv[1];
-	
-	printf("**** Calculadora ****\n");
 
 	do
 	{
@@ -175,46 +158,77 @@ main (int argc, char *argv[])
 		case 1:
 			printf("Introduzca los dos sumandos: ");
 			scanf("%f %f", &num1, &num2);
-			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
+			calculatorprog_1 (host, option, num1, num2);
 			break;
 		case 2:
 			printf("Introduzca el minuendo y el sustraendo: ");
 			scanf("%f %f", &num1, &num2);
-			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
+			calculatorprog_1(host, option, num1, num2);
 			break;
 		case 3:
 			printf("Introduzca los dos factores: ");
 			scanf("%f %f", &num1, &num2);
-			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
+			calculatorprog_1(host, option, num1, num2);
 			break;
 		case 4:
 			printf("Introduzca el dividendo y el divisor: ");
 			scanf("%f %f", &num1, &num2);
 
 			if (num2 != 0)
-				calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
+				calculatorprog_1(host, option, num1, num2);
 			else
 				printf("El divisor no puede ser cero\n");
-			break;
-		case 5:
+		/*case 5:
 			int i = 0;
-			//v.miArray_val = malloc(v.miArray_len * sizeof(float));
-			vect1.vect_val = malloc(10 * sizeof(float));
-			printf("Introduzca los elementos del primer vector, terminando con -1");
-			scanf("%f", &num1);
-			while(num1 != -1) {
+			int length;
+			printf("Introduzca la longitud de los vectores: ");
+			scanf("%d", &length);
+			vect1.vect_val = malloc(length * sizeof(float));
+			vect2.vect_val = malloc(length * sizeof(float));
+			printf("Introduzca los %d elementos del primer vector\n", length);
+			while(i != length) {
+				scanf("%f", &num1);
 				vect1.vect_val[i] = num1;
 				i++;
-				scanf("%f", &num1);
 			}
 			i = 0;
+			num1 = 0;
+			printf("Introduzca los %d elementos del segundo vector\n", length);
+			while(i != length) {
+				scanf("%f", &num1);
+				vect2.vect_val[i] = num1;
+				i++;
+			}
+			i = 0;
+			// DEBUG
+			/*
+			printf("Num de elementos = %d\n", length);
+
+			printf("Elementos del primer vector: ");
 			float a;
 
-			while(i < 10) {
+			while(i < length) {
 				a = vect1.vect_val[i];
 				printf("%f ", a);
 				i++;
 			}
+
+			printf("\n");
+
+			i = 0;
+
+			printf("Elementos del segundo vector: ");
+
+			while(i < length) {
+				a = vect2.vect_val[i];
+				printf("%f ", a);
+				i++;
+			}
+
+			printf("\n");
+			
+
+			calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
 
 			/*if (num2 != 0)
 				calculatorprog_1(host, option, num1, num2, vect1, vect2, matrix1, word1);
@@ -227,6 +241,7 @@ main (int argc, char *argv[])
 			break;
 		}
 	} while (option != 6);
-
+	//calculatorvprog_1 (host);
+	//palindromechecker_1 (host);
 exit (0);
 }

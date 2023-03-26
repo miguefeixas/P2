@@ -51,6 +51,40 @@ struct div_1_argument {
 };
 typedef struct div_1_argument div_1_argument;
 
+#define CALCULATORPROG 0x20000001
+#define CALCULATORVERS 1
+
+#if defined(__STDC__) || defined(__cplusplus)
+#define ADD 1
+extern  float * add_1(float , float , CLIENT *);
+extern  float * add_1_svc(float , float , struct svc_req *);
+#define SUB 2
+extern  float * sub_1(float , float , CLIENT *);
+extern  float * sub_1_svc(float , float , struct svc_req *);
+#define MUL 3
+extern  float * mul_1(float , float , CLIENT *);
+extern  float * mul_1_svc(float , float , struct svc_req *);
+#define DIV 4
+extern  float * div_1(float , float , CLIENT *);
+extern  float * div_1_svc(float , float , struct svc_req *);
+extern int calculatorprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+
+#else /* K&R C */
+#define ADD 1
+extern  float * add_1();
+extern  float * add_1_svc();
+#define SUB 2
+extern  float * sub_1();
+extern  float * sub_1_svc();
+#define MUL 3
+extern  float * mul_1();
+extern  float * mul_1_svc();
+#define DIV 4
+extern  float * div_1();
+extern  float * div_1_svc();
+extern int calculatorprog_1_freeresult ();
+#endif /* K&R C */
+
 struct addv_1_argument {
 	vect arg1;
 	vect arg2;
@@ -69,68 +103,54 @@ struct mulv_1_argument {
 };
 typedef struct mulv_1_argument mulv_1_argument;
 
-#define CALCULATORPROG 0x20000001
-#define CALCULATORVERS 1
+#define CALCULATORVPROG 0x20000002
+#define CALCULATORVVERS 1
 
 #if defined(__STDC__) || defined(__cplusplus)
-#define ADD 1
-extern  float * add_1(float , float , CLIENT *);
-extern  float * add_1_svc(float , float , struct svc_req *);
-#define SUB 2
-extern  float * sub_1(float , float , CLIENT *);
-extern  float * sub_1_svc(float , float , struct svc_req *);
-#define MUL 3
-extern  float * mul_1(float , float , CLIENT *);
-extern  float * mul_1_svc(float , float , struct svc_req *);
-#define DIV 4
-extern  float * div_1(float , float , CLIENT *);
-extern  float * div_1_svc(float , float , struct svc_req *);
-#define ADDV 5
+#define ADDV 1
 extern  vect * addv_1(vect , vect , CLIENT *);
 extern  vect * addv_1_svc(vect , vect , struct svc_req *);
-#define SUBV 6
+#define SUBV 2
 extern  vect * subv_1(vect , vect , CLIENT *);
 extern  vect * subv_1_svc(vect , vect , struct svc_req *);
-#define MULV 7
+#define MULV 3
 extern  vect * mulv_1(vect , int , CLIENT *);
 extern  vect * mulv_1_svc(vect , int , struct svc_req *);
-#define TRANSPOSE 8
+#define TRANSPOSE 4
 extern  matrix * transpose_1(matrix , CLIENT *);
 extern  matrix * transpose_1_svc(matrix , struct svc_req *);
-#define ISPALINDROME 9
-extern  bool_t * ispalindrome_1(word , CLIENT *);
-extern  bool_t * ispalindrome_1_svc(word , struct svc_req *);
-extern int calculatorprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+extern int calculatorvprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
-#define ADD 1
-extern  float * add_1();
-extern  float * add_1_svc();
-#define SUB 2
-extern  float * sub_1();
-extern  float * sub_1_svc();
-#define MUL 3
-extern  float * mul_1();
-extern  float * mul_1_svc();
-#define DIV 4
-extern  float * div_1();
-extern  float * div_1_svc();
-#define ADDV 5
+#define ADDV 1
 extern  vect * addv_1();
 extern  vect * addv_1_svc();
-#define SUBV 6
+#define SUBV 2
 extern  vect * subv_1();
 extern  vect * subv_1_svc();
-#define MULV 7
+#define MULV 3
 extern  vect * mulv_1();
 extern  vect * mulv_1_svc();
-#define TRANSPOSE 8
+#define TRANSPOSE 4
 extern  matrix * transpose_1();
 extern  matrix * transpose_1_svc();
-#define ISPALINDROME 9
+extern int calculatorvprog_1_freeresult ();
+#endif /* K&R C */
+
+#define PALINDROMECHECKER 0x20000003
+#define PALINDROMECHECKERVERS 1
+
+#if defined(__STDC__) || defined(__cplusplus)
+#define ISPALINDROME 1
+extern  bool_t * ispalindrome_1(word , CLIENT *);
+extern  bool_t * ispalindrome_1_svc(word , struct svc_req *);
+extern int palindromechecker_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+
+#else /* K&R C */
+#define ISPALINDROME 1
 extern  bool_t * ispalindrome_1();
 extern  bool_t * ispalindrome_1_svc();
-extern int calculatorprog_1_freeresult ();
+extern int palindromechecker_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */
