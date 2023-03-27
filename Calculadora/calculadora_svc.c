@@ -40,25 +40,25 @@ _div_1 (div_1_argument *argp, struct svc_req *rqstp)
 	return (div_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static vect *
+static calcV_res *
 _addv_1 (addv_1_argument *argp, struct svc_req *rqstp)
 {
 	return (addv_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static vect *
+static calcV_res *
 _subv_1 (subv_1_argument *argp, struct svc_req *rqstp)
 {
 	return (subv_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static vect *
+static calcV_res *
 _mulv_1 (mulv_1_argument *argp, struct svc_req *rqstp)
 {
 	return (mulv_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static matrix *
+static calcM_res *
 _transpose_1 (matrix  *argp, struct svc_req *rqstp)
 {
 	return (transpose_1_svc(*argp, rqstp));
@@ -152,25 +152,25 @@ calculatorvprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 
 	case ADDV:
 		_xdr_argument = (xdrproc_t) xdr_addv_1_argument;
-		_xdr_result = (xdrproc_t) xdr_vect;
+		_xdr_result = (xdrproc_t) xdr_calcV_res;
 		local = (char *(*)(char *, struct svc_req *)) _addv_1;
 		break;
 
 	case SUBV:
 		_xdr_argument = (xdrproc_t) xdr_subv_1_argument;
-		_xdr_result = (xdrproc_t) xdr_vect;
+		_xdr_result = (xdrproc_t) xdr_calcV_res;
 		local = (char *(*)(char *, struct svc_req *)) _subv_1;
 		break;
 
 	case MULV:
 		_xdr_argument = (xdrproc_t) xdr_mulv_1_argument;
-		_xdr_result = (xdrproc_t) xdr_vect;
+		_xdr_result = (xdrproc_t) xdr_calcV_res;
 		local = (char *(*)(char *, struct svc_req *)) _mulv_1;
 		break;
 
 	case TRANSPOSE:
 		_xdr_argument = (xdrproc_t) xdr_matrix;
-		_xdr_result = (xdrproc_t) xdr_matrix;
+		_xdr_result = (xdrproc_t) xdr_calcM_res;
 		local = (char *(*)(char *, struct svc_req *)) _transpose_1;
 		break;
 

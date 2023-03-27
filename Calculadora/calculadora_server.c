@@ -5,6 +5,7 @@
  */
 
 #include "calculadora.h"
+#include "string.h"
 
 float *
 add_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
@@ -46,50 +47,73 @@ div_1_svc(float arg1, float arg2,  struct svc_req *rqstp)
 	return &result;
 }
 
-vect *
+calcV_res *
 addv_1_svc(vect arg1, vect arg2,  struct svc_req *rqstp)
 {
-	static vect  result;
+	static calcV_res  result;
 
-	/*
-	 * insert server code here
-	 */
+	result.calcV_res_u.res.vect_val = malloc(arg1.vect_len * sizeof(float));
+	result.calcV_res_u.res.vect_len = arg1.vect_len;
+
+	for (int i = 0; i < arg1.vect_len; i++) {
+		result.calcV_res_u.res.vect_val[i] = arg1.vect_val[i] + arg2.vect_val[i];
+	}
 
 	return &result;
 }
 
-vect *
+calcV_res *
 subv_1_svc(vect arg1, vect arg2,  struct svc_req *rqstp)
 {
-	static vect  result;
+	static calcV_res  result;
 
-	/*
-	 * insert server code here
-	 */
+	result.calcV_res_u.res.vect_val = malloc(arg1.vect_len * sizeof(float));
+	result.calcV_res_u.res.vect_len = arg1.vect_len;
+
+	for (int i = 0; i < arg1.vect_len; i++) {
+		result.calcV_res_u.res.vect_val[i] = arg1.vect_val[i] - arg2.vect_val[i];
+	}
 
 	return &result;
 }
 
-vect *
-mulv_1_svc(vect arg1, int arg2,  struct svc_req *rqstp)
+calcV_res *
+mulv_1_svc(vect arg1, float arg2,  struct svc_req *rqstp)
 {
-	static vect  result;
+	static calcV_res  result;
 
-	/*
-	 * insert server code here
-	 */
+	result.calcV_res_u.res.vect_val = malloc(arg1.vect_len * sizeof(float));
+	result.calcV_res_u.res.vect_len = arg1.vect_len;
+
+	for (int i = 0; i < arg1.vect_len; i++) {
+		result.calcV_res_u.res.vect_val[i] = arg1.vect_val[i] * arg2;
+	}
 
 	return &result;
 }
 
-matrix *
+calcM_res *
 transpose_1_svc(matrix arg1,  struct svc_req *rqstp)
 {
-	static matrix  result;
+	static calcM_res  result;
 
-	/*
-	 * insert server code here
-	 */
+	xdr_free(xdr_calcM_res, &result);
+
+	vect aux;
+	aux.vect_val = malloc(arg1.matrix_len * sizeof(float));
+
+	result.calcM_res_u.res.matrix_val = malloc(arg1.matrix_len * sizeof(aux));
+	result.calcM_res_u.res.matrix_len = arg1.matrix_len;
+
+	for (int i = 0; i < result.calcM_res_u.res.matrix_len; i++) {
+		result.calcM_res_u.res.matrix_val[i].vect_val = malloc(result.calcM_res_u.res.matrix_len * sizeof(float));
+		result.calcM_res_u.res.matrix_val[i].vect_len = arg1.matrix_len;
+	}
+
+	for (int i = 0; i < result.calcM_res_u.res.matrix_len; i++) {
+		for (int j = 0; j < result.calcM_res_u.res.matrix_len; j++)
+			result.calcM_res_u.res.matrix_val[j].vect_val[i] = arg1.matrix_val[i].vect_val[j];
+	}
 
 	return &result;
 }
@@ -99,9 +123,16 @@ ispalindrome_1_svc(word arg1,  struct svc_req *rqstp)
 {
 	static bool_t  result;
 
-	/*
-	 * insert server code here
-	 */
+	result = TRUE;
+
+	int l = 0;
+    int h = strlen(arg1) - 1;
+
+	while (h > l) {
+        if (arg1[l++] != arg1[h--]) {
+            result = FALSE;
+        }
+    }
 
 	return &result;
 }

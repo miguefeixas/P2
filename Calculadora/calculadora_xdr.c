@@ -38,6 +38,42 @@ xdr_word (XDR *xdrs, word *objp)
 }
 
 bool_t
+xdr_calcV_res (XDR *xdrs, calcV_res *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_int (xdrs, &objp->errno))
+		 return FALSE;
+	switch (objp->errno) {
+	case 0:
+		 if (!xdr_vect (xdrs, &objp->calcV_res_u.res))
+			 return FALSE;
+		break;
+	default:
+		break;
+	}
+	return TRUE;
+}
+
+bool_t
+xdr_calcM_res (XDR *xdrs, calcM_res *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_int (xdrs, &objp->errno))
+		 return FALSE;
+	switch (objp->errno) {
+	case 0:
+		 if (!xdr_matrix (xdrs, &objp->calcM_res_u.res))
+			 return FALSE;
+		break;
+	default:
+		break;
+	}
+	return TRUE;
+}
+
+bool_t
 xdr_add_1_argument (XDR *xdrs, add_1_argument *objp)
 {
 	 if (!xdr_float (xdrs, &objp->arg1))
@@ -102,7 +138,7 @@ xdr_mulv_1_argument (XDR *xdrs, mulv_1_argument *objp)
 {
 	 if (!xdr_vect (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_int (xdrs, &objp->arg2))
+	 if (!xdr_float (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }

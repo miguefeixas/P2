@@ -77,66 +77,66 @@ div_1(float arg1, float arg2,  CLIENT *clnt)
 	return (&clnt_res);
 }
 
-vect *
+calcV_res *
 addv_1(vect arg1, vect arg2,  CLIENT *clnt)
 {
 	addv_1_argument arg;
-	static vect clnt_res;
+	static calcV_res clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, ADDV, (xdrproc_t) xdr_addv_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_calcV_res, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-vect *
+calcV_res *
 subv_1(vect arg1, vect arg2,  CLIENT *clnt)
 {
 	subv_1_argument arg;
-	static vect clnt_res;
+	static calcV_res clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, SUBV, (xdrproc_t) xdr_subv_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_calcV_res, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-vect *
-mulv_1(vect arg1, int arg2,  CLIENT *clnt)
+calcV_res *
+mulv_1(vect arg1, float arg2,  CLIENT *clnt)
 {
 	mulv_1_argument arg;
-	static vect clnt_res;
+	static calcV_res clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	arg.arg1 = arg1;
 	arg.arg2 = arg2;
 	if (clnt_call (clnt, MULV, (xdrproc_t) xdr_mulv_1_argument, (caddr_t) &arg,
-		(xdrproc_t) xdr_vect, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_calcV_res, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}
 	return (&clnt_res);
 }
 
-matrix *
+calcM_res *
 transpose_1(matrix arg1,  CLIENT *clnt)
 {
-	static matrix clnt_res;
+	static calcM_res clnt_res;
 
 	memset((char *)&clnt_res, 0, sizeof(clnt_res));
 	if (clnt_call (clnt, TRANSPOSE,
 		(xdrproc_t) xdr_matrix, (caddr_t) &arg1,
-		(xdrproc_t) xdr_matrix, (caddr_t) &clnt_res,
+		(xdrproc_t) xdr_calcM_res, (caddr_t) &clnt_res,
 		TIMEOUT) != RPC_SUCCESS) {
 		return (NULL);
 	}

@@ -27,6 +27,22 @@ typedef struct {
 
 typedef char *word;
 
+struct calcV_res {
+	int errno;
+	union {
+		vect res;
+	} calcV_res_u;
+};
+typedef struct calcV_res calcV_res;
+
+struct calcM_res {
+	int errno;
+	union {
+		matrix res;
+	} calcM_res_u;
+};
+typedef struct calcM_res calcM_res;
+
 struct add_1_argument {
 	float arg1;
 	float arg2;
@@ -99,7 +115,7 @@ typedef struct subv_1_argument subv_1_argument;
 
 struct mulv_1_argument {
 	vect arg1;
-	int arg2;
+	float arg2;
 };
 typedef struct mulv_1_argument mulv_1_argument;
 
@@ -108,32 +124,32 @@ typedef struct mulv_1_argument mulv_1_argument;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define ADDV 1
-extern  vect * addv_1(vect , vect , CLIENT *);
-extern  vect * addv_1_svc(vect , vect , struct svc_req *);
+extern  calcV_res * addv_1(vect , vect , CLIENT *);
+extern  calcV_res * addv_1_svc(vect , vect , struct svc_req *);
 #define SUBV 2
-extern  vect * subv_1(vect , vect , CLIENT *);
-extern  vect * subv_1_svc(vect , vect , struct svc_req *);
+extern  calcV_res * subv_1(vect , vect , CLIENT *);
+extern  calcV_res * subv_1_svc(vect , vect , struct svc_req *);
 #define MULV 3
-extern  vect * mulv_1(vect , int , CLIENT *);
-extern  vect * mulv_1_svc(vect , int , struct svc_req *);
+extern  calcV_res * mulv_1(vect , float , CLIENT *);
+extern  calcV_res * mulv_1_svc(vect , float , struct svc_req *);
 #define TRANSPOSE 4
-extern  matrix * transpose_1(matrix , CLIENT *);
-extern  matrix * transpose_1_svc(matrix , struct svc_req *);
+extern  calcM_res * transpose_1(matrix , CLIENT *);
+extern  calcM_res * transpose_1_svc(matrix , struct svc_req *);
 extern int calculatorvprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define ADDV 1
-extern  vect * addv_1();
-extern  vect * addv_1_svc();
+extern  calcV_res * addv_1();
+extern  calcV_res * addv_1_svc();
 #define SUBV 2
-extern  vect * subv_1();
-extern  vect * subv_1_svc();
+extern  calcV_res * subv_1();
+extern  calcV_res * subv_1_svc();
 #define MULV 3
-extern  vect * mulv_1();
-extern  vect * mulv_1_svc();
+extern  calcV_res * mulv_1();
+extern  calcV_res * mulv_1_svc();
 #define TRANSPOSE 4
-extern  matrix * transpose_1();
-extern  matrix * transpose_1_svc();
+extern  calcM_res * transpose_1();
+extern  calcM_res * transpose_1_svc();
 extern int calculatorvprog_1_freeresult ();
 #endif /* K&R C */
 
@@ -159,6 +175,8 @@ extern int palindromechecker_1_freeresult ();
 extern  bool_t xdr_vect (XDR *, vect*);
 extern  bool_t xdr_matrix (XDR *, matrix*);
 extern  bool_t xdr_word (XDR *, word*);
+extern  bool_t xdr_calcV_res (XDR *, calcV_res*);
+extern  bool_t xdr_calcM_res (XDR *, calcM_res*);
 extern  bool_t xdr_add_1_argument (XDR *, add_1_argument*);
 extern  bool_t xdr_sub_1_argument (XDR *, sub_1_argument*);
 extern  bool_t xdr_mul_1_argument (XDR *, mul_1_argument*);
@@ -171,6 +189,8 @@ extern  bool_t xdr_mulv_1_argument (XDR *, mulv_1_argument*);
 extern bool_t xdr_vect ();
 extern bool_t xdr_matrix ();
 extern bool_t xdr_word ();
+extern bool_t xdr_calcV_res ();
+extern bool_t xdr_calcM_res ();
 extern bool_t xdr_add_1_argument ();
 extern bool_t xdr_sub_1_argument ();
 extern bool_t xdr_mul_1_argument ();
